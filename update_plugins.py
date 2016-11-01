@@ -42,6 +42,7 @@ vim-surround https://github.com/tpope/vim-surround
 vim-expand-region https://github.com/terryma/vim-expand-region
 vim-multiple-cursors https://github.com/terryma/vim-multiple-cursors
 vim-fugitive https://github.com/tpope/vim-fugitive
+vim-vue https://github.com/posva/vim-vue
 goyo.vim https://github.com/junegunn/goyo.vim
 vim-zenroom2 https://github.com/amix/vim-zenroom2
 vim-repeat https://github.com/tpope/vim-repeat
@@ -57,6 +58,9 @@ vim-abolish https://github.com/tpope/tpope-vim-abolish
 mru.vim https://github.com/vim-scripts/mru.vim
 vim-markdown https://github.com/plasticboy/vim-markdown
 comfortable-motion.vim https://github.com/yuttie/comfortable-motion.vim
+salt-vim https://github.com/saltstack/salt-vim
+vim-template https://github.com/aperezdc/vim-template
+vim-python-pep8-indent https://github.com/Vimjas/vim-python-pep8-indent
 """.strip()
 
 GITHUB_ZIP = '%s/archive/master.zip'
@@ -96,6 +100,13 @@ def update(plugin):
                              temp_directory, SOURCE_DIR)
 
 
+# YouCompleteMe cannot be install using zip
+def clone_ycm():
+    import os
+    os.system('git clone git@github.com:Valloric/YouCompleteMe.git %s/YouCompleteMe' % SOURCE_DIR)
+    os.system('bash %s/../ycm.sh' % SOURCE_DIR)
+
+
 if __name__ == '__main__':
     temp_directory = tempfile.mkdtemp()
 
@@ -105,5 +116,6 @@ if __name__ == '__main__':
                 executor.map(update, PLUGINS.splitlines())
         else:
             [update(x) for x in PLUGINS.splitlines()]
+        clone_ycm()
     finally:
         shutil.rmtree(temp_directory)
